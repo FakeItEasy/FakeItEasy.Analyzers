@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="FakeItEasy" ToolsVersion="11.0">
-  <Include Path="allrules.ruleset" Action="Default" />
-</RuleSet>
