@@ -4,7 +4,6 @@ namespace FakeItEasy.Tests.TestHelpers
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Reflection;
-    using System.Threading;
     using Xunit.Sdk;
 
     [SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments", Justification = "No need to access culture name.")]
@@ -13,8 +12,8 @@ namespace FakeItEasy.Tests.TestHelpers
     {
         private readonly string cultureName;
 
-        private CultureInfo? originalCulture;
-        private CultureInfo? originalUiCulture;
+        private CultureInfo originalCulture = CultureInfo.CurrentCulture;
+        private CultureInfo originalUiCulture = CultureInfo.CurrentUICulture;
 
         public UsingCultureAttribute(string cultureName)
         {
@@ -23,28 +22,16 @@ namespace FakeItEasy.Tests.TestHelpers
 
         public override void After(MethodInfo methodUnderTest)
         {
-#if FEATURE_THREAD_CURRENTCULTURE
-            Thread.CurrentThread.CurrentCulture = this.originalCulture;
-            Thread.CurrentThread.CurrentUICulture = this.originalUiCulture;
-#else
             CultureInfo.CurrentCulture = this.originalCulture;
             CultureInfo.CurrentUICulture = this.originalUiCulture;
-#endif
         }
 
         public override void Before(MethodInfo methodUnderTest)
         {
-#if FEATURE_THREAD_CURRENTCULTURE
-            this.originalCulture = Thread.CurrentThread.CurrentCulture;
-            this.originalUiCulture = Thread.CurrentThread.CurrentUICulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(this.cultureName);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(this.cultureName);
-#else
             this.originalCulture = CultureInfo.CurrentCulture;
             this.originalUiCulture = CultureInfo.CurrentUICulture;
             CultureInfo.CurrentCulture = new CultureInfo(this.cultureName);
             CultureInfo.CurrentUICulture = new CultureInfo(this.cultureName);
-#endif
         }
     }
 }
