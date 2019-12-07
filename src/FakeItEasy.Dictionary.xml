@@ -1,0 +1,11 @@
+<!-- NOTE (adamralph): For more info see: https://docs.microsoft.com/en-us/visualstudio/code-quality/how-to-customize-the-code-analysis-dictionary -->
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>bootstrapper</Word>
+      <Word>Callback</Word>
+      <Word>unconfigured</Word>
+      <Word>unfakeable</Word>
+    </Recognized>
+  </Words>
+</Dictionary>
