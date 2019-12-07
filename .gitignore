@@ -3,10 +3,8 @@
 [Oo]bj
 [Bb]in
 artifacts
-tools/*/ToolPaths.cs
-FakeItEasy.user.props
 
-*.*proj.user
+*.user
 *.ncb
 *.suo
 *.orig
@@ -15,5 +13,4 @@ FakeItEasy.user.props
 *[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
 *.[Dd]ot[Ss]ettings.*
 Thumbs.db
-*.received.txt
 *.nuget.targets
