@@ -19,6 +19,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="FakeItEasy" Version="5.5.0" />
   </ItemGroup>
 
 </Project>

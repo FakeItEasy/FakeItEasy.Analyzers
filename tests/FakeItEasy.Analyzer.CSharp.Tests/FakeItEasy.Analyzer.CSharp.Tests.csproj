@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(AnalyzerTestsTargetFrameworks)</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>FakeItEasy.Analyzer.CSharp.Tests</AssemblyName>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -18,8 +18,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6" PrivateAssets="all" />
     <ProjectReference Include="..\..\src\FakeItEasy.Analyzer.CSharp\FakeItEasy.Analyzer.CSharp.csproj" />
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
-    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
