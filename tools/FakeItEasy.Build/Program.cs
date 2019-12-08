@@ -14,8 +14,6 @@ namespace FakeItEasy.Build
     {
         private static readonly Project[] ProjectsToPack =
         {
-            "src/FakeItEasy/FakeItEasy.csproj",
-            "src/FakeItEasy.Extensions.ValueTask/FakeItEasy.Extensions.ValueTask.csproj",
             "src/FakeItEasy.Analyzer.CSharp/FakeItEasy.Analyzer.CSharp.csproj",
             "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
@@ -24,28 +22,14 @@ namespace FakeItEasy.Build
         {
             ["unit"] = new[]
             {
-                "tests/FakeItEasy.Tests",
                 "tests/FakeItEasy.Analyzer.CSharp.Tests",
                 "tests/FakeItEasy.Analyzer.VisualBasic.Tests",
-            },
-            ["integ"] = new[]
-            {
-                "tests/FakeItEasy.IntegrationTests",
-                "tests/FakeItEasy.IntegrationTests.VB",
-            },
-            ["spec"] = new[]
-            {
-                "tests/FakeItEasy.Specs"
-            },
-            ["approve"] = new[]
-            {
-                "tests/FakeItEasy.Tests.Approval"
             }
         };
 
         public static void Main(string[] args)
         {
-            Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
+            Target("default", DependsOn("unit", "pack"));
 
             Target(
                 "build",
@@ -65,16 +49,6 @@ namespace FakeItEasy.Build
                 DependsOn("build"),
                 forEach: ProjectsToPack,
                 action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output {Path.GetFullPath("artifacts/output")}"));
-
-            Target(
-                "force-approve",
-                () =>
-                    {
-                        foreach (var received in Directory.EnumerateFiles("tests/FakeItEasy.Tests.Approval/ApprovedApi", "*.received.txt", SearchOption.AllDirectories))
-                        {
-                            File.Copy(received, received.Replace(".received.txt", ".approved.txt"), overwrite: true);
-                        }
-                    });
 
             Target(
                 "initialize-user-properties",
