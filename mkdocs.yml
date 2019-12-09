@@ -5,4 +5,4 @@ repo_url: https://github.com/FakeItEasy/FakeItEasy.Analyzers
 extra_css: [css/extra-highlight.css]
 
 nav:
-- FakeItEasy Analyzer: analyzer.md
+- FakeItEasy Analyzer: index.md
