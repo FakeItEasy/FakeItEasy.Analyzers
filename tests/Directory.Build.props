@@ -3,7 +3,8 @@
   <Import Project="../Directory.Build.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>$(AnalyzerTestsTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net461;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <SignAssembly>true</SignAssembly>
