@@ -2,7 +2,6 @@ namespace FakeItEasy.Analyzer.VisualBasic.Tests
 {
     using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
-    using FakeItEasy.Tests.TestHelpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
