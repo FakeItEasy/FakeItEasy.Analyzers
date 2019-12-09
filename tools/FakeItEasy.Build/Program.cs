@@ -50,53 +50,6 @@ namespace FakeItEasy.Build
                 forEach: ProjectsToPack,
                 action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output {Path.GetFullPath("artifacts/output")}"));
 
-            Target(
-                "initialize-user-properties",
-                () =>
-                    {
-                        if (!File.Exists("FakeItEasy.user.props"))
-                        {
-                            var defaultUserProps = @"
-<Project>
-  <PropertyGroup>
-    <BuildProfile></BuildProfile>
-  </PropertyGroup>
-</Project>".Trim();
-                            File.WriteAllText("FakeItEasy.user.props", defaultUserProps, Encoding.UTF8);
-                        }
-                    });
-
-            foreach (var profile in Directory.EnumerateFiles("profiles", "*.props").Select(Path.GetFileNameWithoutExtension))
-            {
-                Target(
-                    "use-profile-" + profile,
-                    DependsOn("initialize-user-properties"),
-                    () =>
-                        {
-                            var xmlDoc = XDocument.Load("FakeItEasy.user.props");
-
-                            var buildProfileElement = xmlDoc.Root.Elements("PropertyGroup").Elements("BuildProfile").FirstOrDefault();
-                            if (buildProfileElement is null)
-                            {
-                                var propertyGroupElement = xmlDoc.Root.Element("PropertyGroup");
-                                if (propertyGroupElement is null)
-                                {
-                                    propertyGroupElement = new XElement("PropertyGroup");
-                                    xmlDoc.Root.Add(propertyGroupElement);
-                                }
-
-                                buildProfileElement = new XElement("BuildProfile");
-                                propertyGroupElement.Add(buildProfileElement);
-                            }
-
-                            if (buildProfileElement.Value != profile)
-                            {
-                                buildProfileElement.Value = profile;
-                                xmlDoc.Save("FakeItEasy.user.props");
-                            }
-                        });
-            }
-
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }
 
