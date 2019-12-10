@@ -33,7 +33,7 @@ namespace FakeItEasy.Build
 
             Target(
                 "build",
-                () => Run("dotnet", "build FakeItEasy.sln -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
+                () => Run("dotnet", "build FakeItEasy.Analyzers.sln -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
 
             foreach (var testSuite in TestSuites)
             {
