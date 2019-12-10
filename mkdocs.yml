@@ -4,5 +4,5 @@ theme: readthedocs
 repo_url: https://github.com/FakeItEasy/FakeItEasy.Analyzers
 extra_css: [css/extra-highlight.css]
 
-nav:
+pages:
 - FakeItEasy Analyzer: index.md
