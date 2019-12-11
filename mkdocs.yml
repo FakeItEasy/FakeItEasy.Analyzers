@@ -4,5 +4,8 @@ theme: readthedocs
 repo_url: https://github.com/FakeItEasy/FakeItEasy.Analyzers
 extra_css: [css/extra-highlight.css]
 
-pages:
+nav:
 - FakeItEasy Analyzer: index.md
+
+markdown_extensions:
+  - pymdownx.tilde
