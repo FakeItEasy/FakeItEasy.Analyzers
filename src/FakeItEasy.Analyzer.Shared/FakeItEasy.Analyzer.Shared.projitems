@@ -30,9 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UnusedReturnValueAnalyzer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)..\FakeItEasy\Compatibility\NotNullWhenAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Compatibility\NotNullWhenAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)tools\install.ps1" Pack="true" PackagePath="tools/%(Filename)%(Extension)" />
