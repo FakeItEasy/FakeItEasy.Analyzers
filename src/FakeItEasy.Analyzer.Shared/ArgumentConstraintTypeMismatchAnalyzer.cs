@@ -81,7 +81,7 @@ namespace FakeItEasy.Analyzer
                 if (nonNullableParameterType is object &&
                     constraintType.IsValueType &&
                     !constraintType.IsNullable() &&
-                    SymbolEqualityComparer.Default.Equals(constraintType, nonNullableParameterType))
+                    constraintType.Equals(nonNullableParameterType))
                 {
                     if (propertyFullName != "FakeItEasy.A`1.That")
                     {
