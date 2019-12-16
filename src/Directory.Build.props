@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
     <PackageIcon>images/FakeItEasy.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy.Analyzers/releases</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
