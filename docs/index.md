@@ -4,7 +4,7 @@ bugs at runtime.
 
 ## Installation
 
-The analyzer works in Visual Studio 2015 Update 1 or later. Install one of these
+The analyzer works in Visual Studio 2017 version 15.9 or later. Install one of these
 NuGet packages in each project that needs it:
 
 - For C# projects: [FakeItEasy.Analyzer.CSharp](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp)
