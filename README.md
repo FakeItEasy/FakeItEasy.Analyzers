@@ -1,6 +1,7 @@
 ![Are you mocking me?](https://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
 
-[![NuGet version](https://img.shields.io/nuget/v/FakeItEasy.Analyzers.svg?style=flat)](https://www.nuget.org/packages/FakeItEasy)
+[![CSharp Analyzer NuGet version](https://img.shields.io/nuget/v/FakeItEasy.Analyzer.CSharp.svg?style=flat&logo=nuget&label=C%23)](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp)
+[![Visual Basic Analyzer NuGet version](https://img.shields.io/nuget/v/FakeItEasy.Analyzer.VisualBasic.svg?style=flat&logo=nuget&label=Visual%20Basic)](https://www.nuget.org/packages/FakeItEasy.Analyzer.VisualBasic)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmxobysgprwpecsb/branch/master?svg=true)](https://ci.appveyor.com/project/FakeItEasy/fakeiteasy-analyzers/branch/master)
 
 Roslyn analyzers to detect incorrect usages of FakeItEasy.
