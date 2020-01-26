@@ -6,7 +6,7 @@
 
   <PropertyGroup Label="Package properties">
     <Title>FakeItEasy.Analyzer.CSharp</Title>
-    <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2015 Update 1 or later.</Description>
+    <Description>Provides analyzer diagnostics to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2017 version 15.9 or later.</Description>
     <PackageTags>$(PackageTags);csharp;c#</PackageTags>
   </PropertyGroup>
 

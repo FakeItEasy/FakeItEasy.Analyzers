@@ -1,10 +1,10 @@
-FakeItEasy provides a Roslyn analyzer to detect incorrect usages of the library
+FakeItEasy provides Roslyn analyzer packages to detect incorrect usages of the library
 that cannot be prevented by the API or the compiler but will typically result in
 bugs at runtime.
 
 ## Installation
 
-The analyzer works in Visual Studio 2017 version 15.9 or later. Install one of these
+The packages work in Visual Studio 2017 version 15.9 or later. Install one of these
 NuGet packages in each project that needs it:
 
 - For C# projects: [FakeItEasy.Analyzer.CSharp](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp)
@@ -12,7 +12,7 @@ NuGet packages in each project that needs it:
 
 ## Diagnostics
 
-The analyzer currently provides the following diagnostics:
+Each analyzer package provides the following diagnostics:
 
 | Id             | Summary                                  | Code Fix? | Description                                                                                                                                           |
 |----------------|------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
