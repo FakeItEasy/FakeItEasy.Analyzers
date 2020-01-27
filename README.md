@@ -4,10 +4,10 @@
 [![Visual Basic Analyzer NuGet version](https://img.shields.io/nuget/v/FakeItEasy.Analyzer.VisualBasic.svg?style=flat&logo=nuget&label=Visual%20Basic)](https://www.nuget.org/packages/FakeItEasy.Analyzer.VisualBasic)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmxobysgprwpecsb/branch/master?svg=true)](https://ci.appveyor.com/project/FakeItEasy/fakeiteasy-analyzers/branch/master)
 
-Roslyn analyzers to detect incorrect usages of FakeItEasy.
+Roslyn analyzer packages to detect incorrect usages of FakeItEasy.
 
-Add an analyzer to your projects to avoid, detect, and fix common programming errors when working with FakeItEasy.
-Analyzers exist for both C# and VisualBasic.
+Add an analyzer package to your project to avoid, detect, and fix common programming errors when working with FakeItEasy.
+Packages exist for both C# and VisualBasic.
 * [Documentation](https://fakeiteasyanalyzers.readthedocs.io/en/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * NuGet packages:
