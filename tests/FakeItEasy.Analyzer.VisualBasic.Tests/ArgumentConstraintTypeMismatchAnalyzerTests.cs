@@ -1,6 +1,6 @@
 namespace FakeItEasy.Analyzer.VisualBasic.Tests
 {
-    using System.Collections.Generic;
+    using System;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CodeFixes;
@@ -47,22 +47,22 @@ End Namespace
     End Class
 ";
 
-        public static IEnumerable<object?[]> FakeItEasy0004SupportedConstraints =>
-            TestCases.FromObject(
-                "Ignored");
+        public static TheoryData<string> FakeItEasy0004SupportedConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A(Of {0}).Ignored");
 
-        public static IEnumerable<object?[]> FakeItEasy0005SupportedConstraints =>
-            TestCases.FromObject(
-                "Ignored",
-                "That.Matches(Function(anything) true)");
+        public static TheoryData<string> FakeItEasy0005SupportedConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A(Of {0}).Ignored",
+                "A(Of {0}).That.Matches(Function(anything) true)");
 
-        public static IEnumerable<object?[]> AllSupportedConstraints => FakeItEasy0005SupportedConstraints;
+        public static TheoryData<string> AllSupportedConstraints => FakeItEasy0005SupportedConstraints;
 
         [Theory]
         [MemberData(nameof(AllSupportedConstraints))]
         public void No_diagnostic_should_be_triggered_when_nullable_constraint_is_used_for_nullable_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of Integer?).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer?");
             string call = $"foo.NullableIntParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -73,7 +73,7 @@ End Namespace
         [MemberData(nameof(AllSupportedConstraints))]
         public void No_diagnostic_should_be_triggered_when_non_nullable_constraint_is_used_for_non_nullable_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NonNullableIntParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -84,7 +84,7 @@ End Namespace
         [MemberData(nameof(AllSupportedConstraints))]
         public void No_diagnostic_should_be_triggered_when_derived_nonnullable_class_constraint_is_used_with_base_class_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of DerivedClass).{constraint}";
+            string completeConstraint = string.Format(constraint, "DerivedClass");
             string call = $"foo.BaseClassParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -95,7 +95,7 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void FakeItEasy0004_should_be_triggered_when_non_nullable_constraint_is_used_for_nullable_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NullableIntParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -114,7 +114,7 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void FakeItEasy0004_should_be_triggered_when_non_nullable_constraint_is_used_for_nullable_parameter_for_indexer(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.Item({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -133,7 +133,7 @@ End Namespace
         [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
         public void FakeItEasy0005_should_be_triggered_when_wrong_typed_nonnullable_constraint_is_used_with_nonnullable_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NonNullableDoubleParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -152,7 +152,7 @@ End Namespace
         [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
         public void FakeItEasy0005_should_be_triggered_when_wrong_typed_nullable_constraint_is_used_with_nullable_parameter(string constraint)
         {
-            string completeConstraint = $"A(Of Integer?).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer?");
             string call = $"foo.NullableLongParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -171,7 +171,7 @@ End Namespace
         [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
         public void FakeItEasy0005_should_be_triggered_when_constraint_with_implicit_conversion_is_used_with_target_type(string constraint)
         {
-            string completeConstraint = $"A(Of CanBeConvertedFrom).{constraint}";
+            string completeConstraint = string.Format(constraint, "CanBeConvertedFrom");
             string call = $"foo.HasImplicitConversionParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
@@ -190,11 +190,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NullableIntParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = $"A(Of Integer?).{constraint}";
+            string fixedConstraint = string.Format(constraint, "Integer?");
             string fixedCall = $"foo.NullableIntParam({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
@@ -204,11 +204,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint_for_indexer(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.Item({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = $"A(Of Integer?).{constraint}";
+            string fixedConstraint = string.Format(constraint, "Integer?");
             string fixedCall = $"foo.Item({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
@@ -218,11 +218,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NullableIntParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
+            string fixedConstraint = GetArgumentConstraintEntry(constraint) + "(Of Integer?).That.IsNotNull()";
             string fixedCall = $"foo.NullableIntParam({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
@@ -232,11 +232,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0004SupportedConstraints))]
         public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull_for_indexer(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.Item({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
+            string fixedConstraint = GetArgumentConstraintEntry(constraint) + "(Of Integer?).That.IsNotNull()";
             string fixedCall = $"foo.Item({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
@@ -246,11 +246,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
         public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type(string constraint)
         {
-            string completeConstraint = $"A(Of Integer).{constraint}";
+            string completeConstraint = string.Format(constraint, "Integer");
             string call = $"foo.NonNullableDoubleParam({completeConstraint})";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = $"A(Of Double).{constraint}";
+            string fixedConstraint = string.Format(constraint, "Double");
             string fixedCall = $"foo.NonNullableDoubleParam({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
@@ -260,11 +260,11 @@ End Namespace
         [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
         public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type_for_indexer(string constraint)
         {
-            string completeConstraint = $"A(Of Short).{constraint}";
+            string completeConstraint = string.Format(constraint, "Short");
             string call = $"foo.Item({completeConstraint}, \"hello\")";
             string code = string.Format(CodeTemplate, call);
 
-            string fixedConstraint = $"A(Of Double).{constraint}";
+            string fixedConstraint = string.Format(constraint, "Double");
             string fixedCall = $"foo.Item({fixedConstraint}, \"hello\")";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
@@ -278,6 +278,13 @@ End Namespace
         protected override CodeFixProvider GetVisualBasicCodeFixProvider()
         {
             return new ArgumentConstraintTypeMismatchCodeFixProvider();
+        }
+
+        private static string GetArgumentConstraintEntry(string argumentConstraint)
+        {
+            // Sometimes an argument constraint will being with A and sometimes An,
+            // and we need to find out which.
+            return argumentConstraint.Substring(0, argumentConstraint.IndexOf("(", StringComparison.Ordinal));
         }
     }
 }
