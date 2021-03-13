@@ -21,6 +21,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
                 ValidateConstraint(constraint);
 
                 theoryData.Add(constraint);
+                theoryData.Add("An" + constraint.Substring(1));
             }
 
             return theoryData;
