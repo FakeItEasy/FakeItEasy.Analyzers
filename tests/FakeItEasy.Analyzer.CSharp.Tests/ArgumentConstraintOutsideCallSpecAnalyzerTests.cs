@@ -1,6 +1,5 @@
 namespace FakeItEasy.Analyzer.CSharp.Tests
 {
-    using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -8,20 +7,28 @@ namespace FakeItEasy.Analyzer.CSharp.Tests
 
     public class ArgumentConstraintOutsideCallSpecAnalyzerTests : DiagnosticVerifier
     {
-        public static IEnumerable<object?[]> Constraints =>
-            TestCases.FromObject(
+        public static TheoryData<string> Constraints =>
+            ArgumentConstraintTestCases.From(
                 "A<int>._",
                 "A<int>.Ignored",
                 "A<int>.That.IsEqualTo(42)",
                 "A<int>.That.Not.IsEqualTo(42)");
 
+        public static TheoryData<string> EvenIncompleteConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A<int>._",
+                "A<int>.Ignored",
+                "A<int>.That",
+                "A<int>.That.Not",
+                "A<int>.That.IsEqualTo(42)",
+                "A<int>.That.Not.IsEqualTo(42)");
+
+        public static TheoryData<string> ErroneousConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A<int>.That.Matches(x => Test(x))");
+
         [Theory]
-        [InlineData("A<int>._")]
-        [InlineData("A<int>.Ignored")]
-        [InlineData("A<int>.That")]
-        [InlineData("A<int>.That.Not")]
-        [InlineData("A<int>.That.IsEqualTo(42)")]
-        [InlineData("A<int>.That.Not.IsEqualTo(42)")]
+        [MemberData(nameof(EvenIncompleteConstraints))]
         public void Diagnostic_should_be_triggered_for_constraint_assigned_to_variable(string constraint)
         {
             string code = $@"using FakeItEasy;
@@ -217,48 +224,50 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(code);
         }
 
-        [Fact]
-        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error()
+        [Theory]
+        [MemberData(nameof(ErroneousConstraints))]
+        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error(string constraint)
         {
-            string code = @"using FakeItEasy;
+            string code = $@"using FakeItEasy;
 namespace TheNamespace
-{
+{{
     class TheClass
-    {
+    {{
         void Test()
-        {
+        {{
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => foo.Bar(A<int>.That.Matches(x => Test(x)))).Returns(42);
-        }
+            A.CallTo(() => foo.Bar({constraint})).Returns(42);
+        }}
 
         bool Test(byte x) => true;
-    }
+    }}
 
-    interface IFoo { void Bar(int x); }
-}
+    interface IFoo {{ void Bar(int x); }}
+}}
 ";
 
             this.VerifyCSharpDiagnosticWithCompilationErrors(code);
         }
 
-        [Fact]
-        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error()
+        [Theory]
+        [MemberData(nameof(ErroneousConstraints))]
+        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error(string constraint)
         {
-            string code = @"using FakeItEasy;
+            string code = $@"using FakeItEasy;
 namespace TheNamespace
-{
+{{
     class TheClass
-    {
+    {{
         void Test()
-        {
-            var c = A<int>.That.Matches(x => Test(x));
-        }
+        {{
+            var c = {constraint};
+        }}
 
         bool Test(byte x) => true;
-    }
+    }}
 
-    interface IFoo { void Bar(int x); }
-}
+    interface IFoo {{ void Bar(int x); }}
+}}
 ";
 
             this.VerifyCSharpDiagnosticWithCompilationErrors(
@@ -266,7 +275,7 @@ namespace TheNamespace
                 new DiagnosticResult
                 {
                     Id = "FakeItEasy0003",
-                    Message = "Argument constraint 'A<int>.That.Matches(x => Test(x))' is not valid outside a call specification.",
+                    Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 21) }
                 });

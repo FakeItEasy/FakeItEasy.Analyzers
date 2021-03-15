@@ -8,18 +8,26 @@ namespace FakeItEasy.Analyzer.VisualBasic.Tests
 
     public class ArgumentConstraintOutsideCallSpecAnalyzerTests : DiagnosticVerifier
     {
-        public static IEnumerable<object?[]> Constraints =>
-            TestCases.FromObject(
+        public static TheoryData<string> Constraints =>
+            ArgumentConstraintTestCases.From(
                 "A(Of Integer).Ignored",
                 "A(Of Integer).That.IsEqualTo(42)",
                 "A(Of Integer).That.Not.IsEqualTo(42)");
 
+        public static TheoryData<string> EvenIncompleteConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A(Of Integer).Ignored",
+                "A(Of Integer).That",
+                "A(Of Integer).That.Not",
+                "A(Of Integer).That.IsEqualTo(42)",
+                "A(Of Integer).That.Not.IsEqualTo(42)");
+
+        public static TheoryData<string> ErroneousConstraints =>
+            ArgumentConstraintTestCases.From(
+                "A(Of Integer)");
+
         [Theory]
-        [InlineData("A(Of Integer).Ignored")]
-        [InlineData("A(Of Integer).That")]
-        [InlineData("A(Of Integer).That.Not")]
-        [InlineData("A(Of Integer).That.IsEqualTo(42)")]
-        [InlineData("A(Of Integer).That.Not.IsEqualTo(42)")]
+        [MemberData(nameof(EvenIncompleteConstraints))]
         public void Diagnostic_should_be_triggered_for_constraint_assigned_to_variable(string constraint)
         {
             string code = $@"Imports FakeItEasy
@@ -205,15 +213,16 @@ End Namespace
             this.VerifyVisualBasicDiagnostic(code);
         }
 
-        [Fact]
-        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error()
+        [Theory]
+        [MemberData(nameof(ErroneousConstraints))]
+        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error(string constraint)
         {
-            string code = @"Imports FakeItEasy
+            string code = $@"Imports FakeItEasy
 Namespace TheNamespace
     Class TheClass
         Sub Test()
             Dim foo = A.Fake(Of IFoo)()
-            A.CallTo(Function() foo.Bar(A(Of Integer).That.Matches(Function(x) Test(x)))).Returns(42)
+            A.CallTo(Function() foo.Bar({constraint}.That.Matches(Function(x) Test(x)))).Returns(42)
         End Sub
 
         Function Test(ByVal x As Byte) As Boolean
@@ -230,14 +239,15 @@ End Namespace
             this.VerifyVisualBasicDiagnosticWithCompilationErrors(code);
         }
 
-        [Fact]
-        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error()
+        [Theory]
+        [MemberData(nameof(ErroneousConstraints))]
+        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error(string constraint)
         {
-            string code = @"Imports FakeItEasy
+            string code = $@"Imports FakeItEasy
 Namespace TheNamespace
     Class TheClass
         Sub Test()
-            Dim c = A(Of Integer).That.Matches(Function(x) Test(x))
+            Dim c = {constraint}.That.Matches(Function(x) Test(x))
         End Sub
 
         Function Test(ByVal x As Byte) As Boolean
@@ -256,7 +266,7 @@ End Namespace
                 new DiagnosticResult
                 {
                     Id = "FakeItEasy0003",
-                    Message = "Argument constraint 'A(Of Integer).That.Matches(Function(x) Test(x))' is not valid outside a call specification.",
+                    Message = $"Argument constraint '{constraint}.That.Matches(Function(x) Test(x))' is not valid outside a call specification.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 21) }
                 });

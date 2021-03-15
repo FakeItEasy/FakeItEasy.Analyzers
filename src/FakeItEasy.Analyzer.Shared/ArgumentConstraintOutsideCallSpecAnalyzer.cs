@@ -31,7 +31,10 @@ namespace FakeItEasy.Analyzer
             ImmutableHashSet.Create(
                 "FakeItEasy.A`1._",
                 "FakeItEasy.A`1.Ignored",
-                "FakeItEasy.A`1.That");
+                "FakeItEasy.A`1.That",
+                "FakeItEasy.An`1._",
+                "FakeItEasy.An`1.Ignored",
+                "FakeItEasy.An`1.That");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
             ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec);
