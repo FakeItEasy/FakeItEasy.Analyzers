@@ -1,6 +1,5 @@
 site_name: FakeItEasy Analyzers
 site_dir: artifacts/docs
-theme: material
 repo_url: https://github.com/FakeItEasy/FakeItEasy.Analyzers
 extra_css: [css/extra-highlight.css]
 
@@ -10,8 +9,10 @@ extra:
 
 theme:
   name: material
-  palette:
+  favicon: img/favicon.ico
+  logo: img/logo.svg
 
+  palette:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
