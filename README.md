@@ -8,7 +8,7 @@ Roslyn analyzer packages to detect incorrect usages of FakeItEasy.
 
 Add an analyzer package to your project to avoid, detect, and fix common programming errors when working with FakeItEasy.
 Packages exist for both C# and VisualBasic.
-* [Documentation](https://fakeiteasyanalyzers.readthedocs.io/en/stable/)
+* [Documentation](https://fakeiteasy.github.io/docs/analyzers/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * NuGet packages:
     * [Official releases on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org")
