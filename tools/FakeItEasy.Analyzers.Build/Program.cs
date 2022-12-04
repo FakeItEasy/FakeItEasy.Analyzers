@@ -48,7 +48,7 @@ namespace FakeItEasy.Build
                 "pack",
                 DependsOn("build"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output {Path.GetFullPath("artifacts/output")}"));
+                action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }
