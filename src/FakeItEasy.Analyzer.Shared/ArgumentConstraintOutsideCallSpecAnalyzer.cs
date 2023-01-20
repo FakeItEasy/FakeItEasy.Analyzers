@@ -23,8 +23,10 @@ namespace FakeItEasy.Analyzer
             ImmutableHashSet.Create(
                 "FakeItEasy.A.CallTo",
                 "FakeItEasy.A.CallTo`1",
+                "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo",
                 "FakeItEasy.Fake`1.CallsTo`1",
+                "FakeItEasy.Fake`1.CallsToSet`1",
                 "FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration`1.To");
 
         private static readonly ImmutableHashSet<string> SupportedArgumentConstraintProperties =
