@@ -1,6 +1,5 @@
 namespace FakeItEasy.Analyzer.VisualBasic.Tests
 {
-    using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -127,6 +126,50 @@ End Namespace
 
         [Theory]
         [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallTo_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = A.Fake(Of IFoo)()
+            A.CallTo(Function() foo.Item({constraint})).Returns(42)
+        End Sub
+    End Class
+
+    Interface IFoo
+        Property Item(ByVal key as Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallTo_Default_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = A.Fake(Of IFoo)()
+            A.CallTo(Function() foo({constraint})).Returns(42)
+        End Sub
+    End Class
+
+    Interface IFoo
+        Default Property Item(ByVal key as Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
         public void Diagnostic_should_not_be_triggered_in_A_CallToSet_To_Expression(string constraint)
         {
             string code = $@"Imports FakeItEasy
@@ -140,6 +183,50 @@ Namespace TheNamespace
 
     Interface IFoo
         Property Bar As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallToSet_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = A.Fake(Of IFoo)()
+            A.CallToSet(Function() foo.Item({constraint})).DoesNothing()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Property Item(ByVal key as Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallToSet_Default_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = A.Fake(Of IFoo)()
+            A.CallToSet(Function() foo({constraint})).DoesNothing()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Default Property Item(ByVal key as Integer) As Integer
     End Interface
 End Namespace
 ";
@@ -171,7 +258,7 @@ End Namespace
 
         [Theory]
         [MemberData(nameof(Constraints))]
-        public void Diagnostic_should_not_be_triggered_in_Fake_CallTo_Action(string constraint)
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsTo_Action(string constraint)
         {
             string code = $@"Imports FakeItEasy
 Namespace TheNamespace
@@ -184,6 +271,50 @@ Namespace TheNamespace
 
     Interface IFoo
         Sub Bar(ByVal x As Integer)
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsTo_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = new Fake(Of IFoo)()
+            fake.CallsTo(Function(foo) foo.Item({constraint})).Returns(42)
+        End Sub
+    End Class
+
+    Interface IFoo
+        Property Item(ByVal key as Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsTo_Default_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = new Fake(Of IFoo)()
+            fake.CallsTo(Function(foo) foo({constraint})).Returns(42)
+        End Sub
+    End Class
+
+    Interface IFoo
+        Default Property Item(ByVal key as Integer) As Integer
     End Interface
 End Namespace
 ";
@@ -206,6 +337,50 @@ Namespace TheNamespace
 
     Interface IFoo
         Property Bar As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsToSet_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = new Fake(Of IFoo)()
+            fake.CallsToSet(Function(foo) foo.Item({constraint})).DoesNothing()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Property Item(ByVal key as Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsToSet_Default_Indexer(string constraint)
+        {
+            string code = $@"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = new Fake(Of IFoo)()
+            fake.CallsToSet(Function(foo) foo({constraint})).DoesNothing()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Default Property Item(ByVal key as Integer) As Integer
     End Interface
 End Namespace
 ";

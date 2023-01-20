@@ -23,8 +23,10 @@ namespace FakeItEasy.Analyzer
             ImmutableHashSet.Create(
                 "FakeItEasy.A.CallTo",
                 "FakeItEasy.A.CallTo`1",
+                "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo",
                 "FakeItEasy.Fake`1.CallsTo`1",
+                "FakeItEasy.Fake`1.CallsToSet`1",
                 "FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration`1.To");
 
         private static readonly ImmutableHashSet<string> SupportedArgumentConstraintProperties =
@@ -54,7 +56,7 @@ namespace FakeItEasy.Analyzer
 
         private static bool IsInArgumentToMethodThatSupportsArgumentConstraints(SyntaxNode node, SyntaxNodeAnalysisContext context)
         {
-            while (node is object)
+            while (node is not null)
             {
                 switch (node.Kind())
                 {
@@ -71,8 +73,7 @@ namespace FakeItEasy.Analyzer
                         break;
                 }
 
-                var invocation = node as InvocationExpressionSyntax;
-                if (invocation is object && SupportsArgumentConstraints(invocation, context))
+                if (node is InvocationExpressionSyntax invocation && SupportsArgumentConstraints(invocation, context))
                 {
                     return true;
                 }
