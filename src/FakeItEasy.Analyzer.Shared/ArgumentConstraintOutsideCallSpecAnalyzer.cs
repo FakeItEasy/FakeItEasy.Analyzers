@@ -56,7 +56,7 @@ namespace FakeItEasy.Analyzer
 
         private static bool IsInArgumentToMethodThatSupportsArgumentConstraints(SyntaxNode node, SyntaxNodeAnalysisContext context)
         {
-            while (node is object)
+            while (node is not null)
             {
                 switch (node.Kind())
                 {
@@ -73,8 +73,7 @@ namespace FakeItEasy.Analyzer
                         break;
                 }
 
-                var invocation = node as InvocationExpressionSyntax;
-                if (invocation is object && SupportsArgumentConstraints(invocation, context))
+                if (node is InvocationExpressionSyntax invocation && SupportsArgumentConstraints(invocation, context))
                 {
                     return true;
                 }
