@@ -134,6 +134,29 @@ namespace TheNamespace
 
         [Theory]
         [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallTo_Indexer(string constraint)
+        {
+            string code = $@"using FakeItEasy;
+namespace TheNamespace
+{{
+    class TheClass
+    {{
+        void Test()
+        {{
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => foo[{constraint}]).Returns(42);
+        }}
+    }}
+
+    interface IFoo {{ int this[int key] {{ get; set; }} }}
+}}
+";
+
+            this.VerifyCSharpDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
         public void Diagnostic_should_not_be_triggered_in_A_CallToSet_To_Expression(string constraint)
         {
             string code = $@"using FakeItEasy;
@@ -149,6 +172,29 @@ namespace TheNamespace
     }}
 
     interface IFoo {{ int Bar {{ get; set; }} }}
+}}
+";
+
+            this.VerifyCSharpDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_A_CallToSet_Indexer(string constraint)
+        {
+            string code = $@"using FakeItEasy;
+namespace TheNamespace
+{{
+    class TheClass
+    {{
+        void Test()
+        {{
+            var foo = A.Fake<IFoo>();
+            A.CallToSet(() => foo[{constraint}]).DoesNothing();
+        }}
+    }}
+
+    interface IFoo {{ int this[int key] {{ get; set; }} }}
 }}
 ";
 
@@ -180,7 +226,7 @@ namespace TheNamespace
 
         [Theory]
         [MemberData(nameof(Constraints))]
-        public void Diagnostic_should_not_be_triggered_in_Fake_CallTo_Action(string constraint)
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsTo_Action(string constraint)
         {
             string code = $@"using FakeItEasy;
 namespace TheNamespace
@@ -195,6 +241,29 @@ namespace TheNamespace
     }}
 
     interface IFoo {{ void Bar(int x); }}
+}}
+";
+
+            this.VerifyCSharpDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsTo_Indexer(string constraint)
+        {
+            string code = $@"using FakeItEasy;
+namespace TheNamespace
+{{
+    class TheClass
+    {{
+        void Test()
+        {{
+            var fake = new Fake<IFoo>();
+            fake.CallsTo(foo => foo[{constraint}]).Returns(42);
+        }}
+    }}
+
+    interface IFoo {{ int this[int key] {{ get; set; }} }}
 }}
 ";
 
@@ -218,6 +287,29 @@ namespace TheNamespace
     }}
 
     interface IFoo {{ int Bar {{ get; set; }} }}
+}}
+";
+
+            this.VerifyCSharpDiagnostic(code);
+        }
+
+        [Theory]
+        [MemberData(nameof(Constraints))]
+        public void Diagnostic_should_not_be_triggered_in_Fake_CallsToSet_Indexer(string constraint)
+        {
+            string code = $@"using FakeItEasy;
+namespace TheNamespace
+{{
+    class TheClass
+    {{
+        void Test()
+        {{
+            var fake = new Fake<IFoo>();
+            fake.CallsToSet(foo => foo[{constraint}]).DoesNothing();
+        }}
+    }}
+
+    interface IFoo {{ int this[int key] {{ get; set; }} }}
 }}
 ";
 
