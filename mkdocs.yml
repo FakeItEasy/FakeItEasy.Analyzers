@@ -43,4 +43,4 @@ markdown_extensions:
   - pymdownx.tilde
 
 nav:
-- FakeItEasy Analyzer: index.md
+- FakeItEasy Analyzers: index.md
