@@ -32,10 +32,11 @@ jobs:
         with:
           name: windows-artifacts
           path: /tmp/artifacts
-      - name: Set DRY_RUN_OPTION env variable
-        if: github.event.inputs.dry-run
-        run: echo "DRY_RUN_OPTION=--dry-run" >> $GITHUB_ENV
       - name: Deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "FakeItEasy/FakeItEasy.Analyzers" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"
+        run: |
+          if [[ "${{ github.event.inputs.dry-run }}" == "true" ]]; then
+            DRY_RUN_OPTION=--dry-run
+          fi
+          dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "${{ github.repository }}" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"
