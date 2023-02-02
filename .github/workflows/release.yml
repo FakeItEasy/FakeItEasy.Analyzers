@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Trigger docs generation
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           publishMode=auto-merge
           if [[ "${{ github.event.inputs.dry-run }}" == "true" ]]; then
