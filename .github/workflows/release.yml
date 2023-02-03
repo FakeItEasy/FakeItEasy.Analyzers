@@ -18,7 +18,7 @@ jobs:
 
   deploy:
     needs: build
-    uses: FakeItEasy/FakeItEasy.Tools/.github/workflows/deploy.yml@43ce14581503ed404628fe66b2b87803c213e050
+    uses: FakeItEasy/FakeItEasy.Tools/.github/workflows/deploy.yml@72f1aa014c808ac3ee72fbb232358b8e71519331
     with:
       artifact-name: windows-artifacts
       docs-output-prefix: "docs/analyzers"
