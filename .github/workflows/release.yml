@@ -18,9 +18,13 @@ jobs:
 
   deploy:
     needs: build
-    uses: FakeItEasy/FakeItEasy.Tools/.github/workflows/deploy.yml@72f1aa014c808ac3ee72fbb232358b8e71519331
-    with:
-      artifact-name: windows-artifacts
-      docs-output-prefix: "docs/analyzers"
-      dry-run: ${{ github.event.inputs.dry-run == true }}
-    secrets: inherit
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - uses: ./tools-shared/.github/actions/deploy
+      with:
+        artifact-name: windows-artifacts
+        docs-output-prefix: "docs/analyzers"
+        dry-run: ${{ github.event.inputs.dry-run || false }}
