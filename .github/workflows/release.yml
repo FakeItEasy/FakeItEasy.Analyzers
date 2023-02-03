@@ -11,10 +11,6 @@ on:
         default: true
         description: "Dry run (doesn't actually publish anything)"
 
-env:
-  NUGET_SERVER_URL: https://www.nuget.org/
-  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-
 jobs:
 
   build:
@@ -22,41 +18,9 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: windows-artifacts
-          path: /tmp/artifacts
-      - name: Deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [[ "${{ github.event.inputs.dry-run }}" == "true" ]]; then
-            DRY_RUN_OPTION=--dry-run
-          fi
-          dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "${{ github.repository }}" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"
-
-  deploy-docs:
-    needs: deploy
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Trigger docs generation
-        env:
-            GH_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
-        run: |
-          publishMode=auto-merge
-          if [[ "${{ github.event.inputs.dry-run }}" == "true" ]]; then
-            publishMode=none
-          fi
-          gh workflow run generate-docs.yml \
-            -R FakeItEasy/fakeiteasy.github.io \
-            -f output-prefix=docs/analyzers \
-            -f version=${{ github.ref_name }} \
-            -f source-repo=${{ github.repository }} \
-            -f source-ref=${{ github.ref_name }} \
-            -f publish-mode=$publishMode
+    uses: FakeItEasy/FakeItEasy.Tools/.github/workflows/deploy.yml@43ce14581503ed404628fe66b2b87803c213e050
+    with:
+      artifact-name: windows-artifacts
+      docs-output-prefix: "docs/analyzers"
+      dry-run: ${{ github.event.inputs.dry-run == true }}
+    secrets: inherit
