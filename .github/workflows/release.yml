@@ -23,8 +23,11 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: ./tools-shared/.github/actions/deploy
+    - name: Deploy
+      uses: ./tools-shared/.github/actions/deploy
       with:
         artifact-name: windows-artifacts
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
         docs-output-prefix: "docs/analyzers"
+        docs-workflow-token: ${{ secrets.BOT_GITHUB_TOKEN }}
         dry-run: ${{ github.event.inputs.dry-run || false }}
