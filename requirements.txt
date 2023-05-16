@@ -47,14 +47,17 @@ packaging==22.0
     # via mkdocs
 pygments==2.14.0
     # via mkdocs-material
-pymdown-extensions==9.9
-    # via mkdocs-material
+pymdown-extensions==10.0.1
+    # via
+    #   -r requirements.in
+    #   mkdocs-material
 python-dateutil==2.8.2
     # via ghp-import
 pyyaml==6.0
     # via
     #   mike
     #   mkdocs
+    #   pymdown-extensions
     #   pyyaml-env-tag
 pyyaml-env-tag==0.1
     # via mkdocs
