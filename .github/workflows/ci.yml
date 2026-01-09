@@ -60,17 +60,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: false
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: 3.11
-          architecture: x64
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --requirement requirements.txt
+          version: '0.9.4'
       - name: Build docs
-        run: python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+        run: ./build.ps1 docs
+        shell: pwsh
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:

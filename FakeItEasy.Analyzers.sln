@@ -19,8 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		mkdocs.yml = mkdocs.yml
 		README.md = README.md
 		.github\workflows\release.yml = .github\workflows\release.yml
-		requirements.in = requirements.in
-		requirements.txt = requirements.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C407-4DD9-B77B-D99162B9FC7C}"
@@ -39,11 +37,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AD790E7D
 		tests\Directory.Build.props = tests\Directory.Build.props
 		tests\FakeItEasy.Dictionary.Tests.xml = tests\FakeItEasy.Dictionary.Tests.xml
 		tests\FakeItEasy.Tests.ruleset = tests\FakeItEasy.Tests.ruleset
+		tests\.editorconfig = tests\.editorconfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-377B-47C4-8644-AF1F4FD669E2}"
 	ProjectSection(SolutionItems) = preProject
-		docs\analyzer.md = docs\analyzer.md
+		docs\mkdocs.yml = docs\mkdocs.yml
+		docs\pyproject.toml = docs\pyproject.toml
+		docs\index.md = docs\index.md
+		docs\uv.lock = docs\uv.lock
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{5A081DFC-0269-480B-853A-89D09AF478A8}"

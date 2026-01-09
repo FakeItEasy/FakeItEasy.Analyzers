@@ -1,0 +1,11 @@
+[project]
+name = "fakeiteasy.analyzers"
+version = "0.1.0" # value isn't important; we're just building the documentation
+requires-python = "~=3.14.0"
+
+[dependency-groups]
+dev = [
+    "mike",
+    "mkdocs",
+    "mkdocs-material",
+]

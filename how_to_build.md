@@ -9,31 +9,7 @@ At the time of writing the full build (including testing on all target framework
 
 ## Prerequisites
 
-The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
-
-### On Windows
-
-Ensure that the following are installed:
-
-1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
-
-2. The .NET Core 2.1 runtime
-
-3. The .NET Framework 4.6.1 or higher
-
-4. The targeting packs for .NET Framework 4.0 and 4.5
-
-5. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
-
-### On Linux
-
-On non-Windows operating systems, tests are run on .NET Core 2.1 and 3.0, since the .NET Framework isn't supported on Linux.
-
-Ensure the following are installed:
-
-1. The .NET Core 2.1 runtime
-
-2. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
+An up-to-date version of the .NET 10.0 SDK
 
 ## Building
 
@@ -78,19 +54,14 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 ### Building the documentation
 
-The CI workflow uses [mkdocs](https://www.mkdocs.org/) to build the documentation. To replicate this process,
-install a recent [Python version](https://www.python.org/downloads/), and then install all the requirements
-by running
+The CI workflow uses [mkdocs](https://www.mkdocs.org/) to build the documentation.
+We use [uv](https://docs.astral.sh/uv/) to manage mkdocs and other Python tools used for the documentation.
+To build the documentation, **[install uv](https://docs.astral.sh/uv/getting-started/installation/)**.
+
+After this, you can generate the docs by running
 
 ```
-python -m pip install --upgrade pip
-python -m pip install --requirement requirements.txt
-```
-
-from the root of the repository. After this, you can generate the docs by running
-
-```
-python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+build.cmd docs
 ```
 
 The documentation will be built in `artifacts/docs` and can be viewed directly in a web
@@ -98,20 +69,13 @@ browser or served using a number of tools such as [dotnet-serve](https://github.
 
 ### Updating the documentation-building packages
 
-The versions of the packages used to build the documentation are frozen using
-[pip-compile](https://github.com/jazzband/pip-tools#example-usage-for-pip-compile) from the pip-tools project.
+The versions of the packages used to build the documentation are frozen using uv as well.
 
-If you wish to update the packages used, install pip-tools:
-
-```
-python -m pip install --upgrade pip-tools
-```
-
-Then edit `requirements.in`, specifying the new requirements, and run
+If you wish to update the packages used, edit `pyproject.toml`, specifying the dev-dependencies, and run
 
 ```
-pip-compile requirements.in
+uv lock
 ```
 
-from the root of the repository. After verifying the generated documentation, you can commit both
-`requirements.*` files.
+from the `docs` directory. After verifying the generated documentation, you can commit both
+`pyproject.toml` and `uv.lock`.
