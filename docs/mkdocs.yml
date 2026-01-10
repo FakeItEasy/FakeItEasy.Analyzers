@@ -1,7 +1,13 @@
 site_name: FakeItEasy Analyzers
-site_dir: artifacts/docs
+site_dir: ../artifacts/docs
 repo_url: https://github.com/FakeItEasy/FakeItEasy.Analyzers
 extra_css: [css/extra-highlight.css]
+docs_dir: .
+exclude_docs: |
+    .python-version
+    mkdocs.yml
+    pyproject.toml
+    uv.lock
 
 extra:
   version:
@@ -38,7 +44,10 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: !ENV [SNIPPETS_REPO_ROOT, '..']
+      check_paths: true
+      dedent_subsections: true
   - pymdownx.superfences
   - pymdownx.tilde
 

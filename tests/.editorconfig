@@ -1,0 +1,9 @@
+[*.{cs,vb}]
+dotnet_diagnostic.CA1510.severity = none # Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1510)
+dotnet_diagnostic.CA1515.severity = none # Because an application's API isn't typically referenced from outside the assembly, types can be made internal
+dotnet_diagnostic.CA1845.severity = none # Use span-based 'string.Concat' and 'AsSpan' instead of 'Substring'
+dotnet_diagnostic.CA1851.severity = none # Possible multiple enumerations of 'IEnumerable' collection
+dotnet_diagnostic.CA1859.severity = none # Change return type of method 'GetCompilerDiagnostics' from 'System.Collections.Generic.IEnumerable<Microsoft.CodeAnalysis.Diagnostic>' to 'System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.Diagnostic>' for improved performance
+dotnet_diagnostic.CA1860.severity = none # Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance
+dotnet_diagnostic.CA1863.severity = none # Cache a 'CompositeFormat' for repeated use in this formatting operation
+dotnet_diagnostic.CA1865.severity = none # Use 'string.IndexOf(char)' instead of 'string.IndexOf(string)' when you have a string with a single char (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1865)

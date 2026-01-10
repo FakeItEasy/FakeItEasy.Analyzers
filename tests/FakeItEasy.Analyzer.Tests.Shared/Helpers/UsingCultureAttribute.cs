@@ -4,7 +4,6 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Reflection;
-    using System.Threading;
     using Xunit.Sdk;
 
     [SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments", Justification = "No need to access culture name.")]
@@ -37,15 +36,6 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
             SetCurrentUiCulture(this.culture);
         }
 
-#if FEATURE_THREAD_CURRENTCULTURE
-        private static void SetCurrentCulture(CultureInfo culture) => Thread.CurrentThread.CurrentCulture = culture;
-
-        private static void SetCurrentUiCulture(CultureInfo culture) => Thread.CurrentThread.CurrentUICulture = culture;
-
-        private static CultureInfo GetCurrentCulture() => Thread.CurrentThread.CurrentCulture;
-
-        private static CultureInfo GetCurrentUiCulture() => Thread.CurrentThread.CurrentUICulture;
-#else
         private static void SetCurrentCulture(CultureInfo culture) => CultureInfo.CurrentCulture = culture;
 
         private static void SetCurrentUiCulture(CultureInfo culture) => CultureInfo.CurrentUICulture = culture;
@@ -53,6 +43,5 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
         private static CultureInfo GetCurrentCulture() => CultureInfo.CurrentCulture;
 
         private static CultureInfo GetCurrentUiCulture() => CultureInfo.CurrentUICulture;
-#endif
     }
 }
